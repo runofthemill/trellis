@@ -112,6 +112,14 @@ Vagrant.configure('2') do |config|
   provisioning_path = local_provisioning? ? ANSIBLE_PATH_ON_VM : ANSIBLE_PATH
 
   config.vm.provision provisioner do |ansible|
+    # Run script to update local SSH config for .dev hostname after `vagrant up`
+    config.trigger.after :up do |trigger|
+      trigger.run = {
+        path: "./bin/ssh-config-development.sh",
+        args: [main_hostname, "#{ANSIBLE_PATH}", trellis_config.wordpress_sites.keys.first]
+      }
+    end
+
     if local_provisioning?
       ansible.install_mode = 'pip'
       ansible.provisioning_path = provisioning_path
