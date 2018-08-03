@@ -22,6 +22,7 @@ then
 cat << EOF > wp-cli.local.yml
 @dev:
   ssh: vagrant@$host/srv/www/$site/current
+  path: web/wp
 EOF
 
 fi
